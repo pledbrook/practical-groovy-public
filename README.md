@@ -7,7 +7,9 @@ The drafts are available as:
 * [HTML](https://pledbrook.github.io/practical-groovy-public/)
 * [PDF](https://pledbrook.github.io/practical-groovy-public/practical-groovy.pdf)
 
-Remember that these are early drafts and not representative of the final book. But I genuinely hope that people will find them useful.
+Remember that these are early drafts and not representative of the final book. If you would like to leave feedback in terms of improvements or fixes, please add via this project's GitHub Issues.
+
+I hope that people find even the early drafts useful!
 
 ## Table of contents
 
