@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.0">
+<meta name="generator" content="Asciidoctor 1.5.2">
 <title>Practical Groovy</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
 /* Remove the comments around the @import statement below when using this as a custom stylesheet */
-/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400";*/
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400";*/
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}
 audio,canvas,video{display:inline-block}
 audio:not([controls]){display:none;height:0}
@@ -274,8 +274,8 @@ dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
 ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.unstyled,ol.unnumbered,ul.checklist,ul.none{list-style-type:none}
 ul.unstyled,ol.unnumbered,ul.checklist{margin-left:.625em}
-ul.checklist li>p:first-child>.fa-check-square-o:first-child,ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
-ul.checklist li>p:first-child>input[type="checkbox"]:first-child{position:relative;top:1px}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1em;font-size:.85em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{width:1em;position:relative;top:1px}
 ul.inline{margin:0 auto .625em auto;margin-left:-1.375em;margin-right:0;padding:0;list-style:none;overflow:hidden}
 ul.inline>li{list-style:none;float:left;margin-left:1.375em;display:block}
 ul.inline>li>*{display:block}
@@ -380,7 +380,7 @@ p{margin-bottom:1.25rem}
 *{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
 a{color:inherit!important;text-decoration:underline!important}
 a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
-a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after,a[href^="mailto:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
 abbr[title]:after{content:" (" attr(title) ")"}
 pre,blockquote,tr,img{page-break-inside:avoid}
 thead{display:table-header-group}
@@ -518,6 +518,14 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_the_joy_of_strings">3.1. The joy of strings</a></li>
 <li><a href="#_collections_ranges_and_maps">3.2. Collections, ranges and maps</a></li>
 <li><a href="#_chapter_example">3.3. Chapter example</a></li>
+</ul>
+</li>
+<li><a href="#_doing_odd_jobs_scripting">4. Doing odd jobs (scripting)</a>
+<ul class="sectlevel2">
+<li><a href="#_working_with_the_filesystem">4.1. Working with the filesystem</a></li>
+<li><a href="#_dates_and_time">4.2. Dates and time</a></li>
+<li><a href="#_closures">4.3. Closures</a></li>
+<li><a href="#_revisiting_earlier_examples">4.4. Revisiting earlier examples</a></li>
 </ul>
 </li>
 </ul>
@@ -796,7 +804,7 @@ println result</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This little example introduces some new concepts and syntax. First, it declares and uses a few local variables using the keyword <code>def</code>. Variables declared in this way can contain values of any type, not just numbers. In other wirds, the variables are untyped.</p>
+<p>This little example introduces some new concepts and syntax. First, it declares and uses a few local variables using the keyword <code>def</code>. Variables declared in this way can contain values of any type, not just numbers. In other words, the variables are untyped.</p>
 </div>
 <div class="paragraph">
 <p>The second item of interest is the <code>sqrt()</code> method call. The syntax is absolutely identical to Java&#8217;s and in this case you&#8217;re seeing a <em>static</em> method. This is called on the class itself (<code>lava.lang.Math</code>) rather than on an instance of that class.</p>
@@ -909,7 +917,7 @@ Possible solutions: println(), println(), println(java.lang.Object),
 <p>Another interesting facet of the language is that you&#8217;re seeing runtime errors for unknown methods and properties. This is because Groovy resolves properties and methods at runtime by default rather than at compile time. This can be changed, as you&#8217;ll see in chapter TODO. You can also make use of this runtime resolution to do interesting things such as creating builders (chapter TODO) or mock objects (chapter TODO).</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s return to the world of numbers and look at some more examples. In the following script, I perform a floatingpoint multiplication repeatedly and time how long it takes:</p>
+<p>Let&#8217;s return to the world of numbers and look at some more examples. In the following script, I perform a floating-point multiplication repeatedly and time how long it takes:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1043,7 +1051,7 @@ println factorial(<span class="integer">17</span>)</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Were you expecting a negative number? Whether you were or not, it&#8217;s certainly not correct. The reason for this is that <code>int</code> and <code>Integer</code> can only store integers up to a size of 2<sup>31</sup>. If your value goes beyond that, then you end up with something called <em>integer overflow</em>.</p>
+<p>Were you expecting a negative number? Whether you were or not, that&#8217;s what happens and it&#8217;s certainly not correct. The reason for this is that <code>int</code> and <code>Integer</code> can only store integers up to a size of 2<sup>31</sup>. If your value goes beyond that, then you end up with something called <em>integer overflow</em>.</p>
 </div>
 <div class="paragraph">
 <p>You can force Groovy to use a wider integer type by changing the specified type. Long integers are 64 bit, so that will allow us to calculate larger factorials:</p>
@@ -1558,11 +1566,11 @@ println <span class="string"><span class="delimiter">&quot;</span><span class="c
 <div class="paragraph">
 <p>We&#8217;ll start with ordered collections, which are represented by the <a href="https://docs.oracle.com/javase/8/docs/api/?java/util/List.html"><code>java.util.List</code></a> interface. In the following example, I create a list of words (strings) and then proceed to iterate over them to calculate the shortest, longest and average word lengths. Before you critize the implementation (there are better ways to do this), remember that I&#8217;m trying to introduce new concepts and APIs gradually!</p>
 </div>
-<div class="listingblock">
+<div id="wordStats" class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> words = [<span class="string"><span class="delimiter">&quot;</span><span class="content">orange</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">sit</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">flabbergasted</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">honorific</span><span class="delimiter">&quot;</span></span>]   <b class="conum">(1)</b>
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">final</span> words = [<span class="string"><span class="delimiter">&quot;</span><span class="content">orange</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">sit</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">flabbergasted</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">honorific</span><span class="delimiter">&quot;</span></span>]   <b class="conum">(1)</b>
 
-<span class="keyword">def</span> minWordLength = <span class="predefined-type">Integer</span>.MAX_VALUE                                 <b class="conum">(2)</b>
+<span class="keyword">def</span> minWordLength = <span class="predefined-type">Integer</span>.MAX_VALUE                                   <b class="conum">(2)</b>
 <span class="keyword">def</span> maxWordLength = <span class="integer">0</span>
 <span class="keyword">def</span> totalLength = <span class="integer">0</span>
 <span class="keyword">for</span> (w <span class="keyword">in</span> words) {
@@ -1573,7 +1581,7 @@ println <span class="string"><span class="delimiter">&quot;</span><span class="c
 
 println <span class="string"><span class="delimiter">&quot;</span><span class="content">Min word length:  </span><span class="inline"><span class="inline-delimiter">${</span>minWordLength<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
 println <span class="string"><span class="delimiter">&quot;</span><span class="content">Max word length:  </span><span class="inline"><span class="inline-delimiter">${</span>maxWordLength<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
-println <span class="string"><span class="delimiter">&quot;</span><span class="content">Avg word length:  </span><span class="inline"><span class="inline-delimiter">${</span>totalLength / words.size()<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>             <b class="conum">(3)</b></code></pre>
+println <span class="string"><span class="delimiter">&quot;</span><span class="content">Avg word length:  </span><span class="inline"><span class="inline-delimiter">${</span>totalLength / words.size()<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>               <b class="conum">(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1620,7 +1628,7 @@ println <span class="string"><span class="delimiter">&quot;</span><span class="c
 <div class="paragraph">
 <p>Sometimes a list literal isn&#8217;t sufficient and you need to build one dynamically. Consider a method that creates a list of the powers of two, i.e. <em>f(x) = 2<sup>x</sup></em>:</p>
 </div>
-<div class="listingblock">
+<div id="powersOfTwo" class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">List</span> powersOfTwo(<span class="type">int</span> n) {
     <span class="keyword">def</span> result = <span class="type">[]</span>
@@ -1725,7 +1733,7 @@ println <span class="string"><span class="delimiter">&quot;</span><span class="c
 
 println <span class="string"><span class="delimiter">&quot;</span><span class="content">Min word length:  </span><span class="inline"><span class="inline-delimiter">${</span>minWordLength<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
 println <span class="string"><span class="delimiter">&quot;</span><span class="content">Max word length:  </span><span class="inline"><span class="inline-delimiter">${</span>maxWordLength<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
-println <span class="string"><span class="delimiter">&quot;</span><span class="content">Avg word length:  </span><span class="inline"><span class="inline-delimiter">${</span>totalLength / words.size()<span class="inline-delimiter">}</span></span><span class="content">        </span></span><b class="conum">(2)</b></code></pre>
+println <span class="string"><span class="delimiter">&quot;</span><span class="content">Avg word length:  </span><span class="inline"><span class="inline-delimiter">${</span>totalLength / words.size()<span class="inline-delimiter">}</span></span><span class="content">        </span></span> <b class="conum">(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -2299,10 +2307,558 @@ println <span class="string"><span class="delimiter">&quot;</span><span class="c
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_doing_odd_jobs_scripting">4. Doing odd jobs (scripting)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As software developers, we typically build applications and systems. And yet we often find ourselves doing miscellaneous other tasks that involve processing text files, fixing databases, generating reports, etc. Those tasks may even need to be repeated in the future. Such tasks can be laborious and error prone when performed manually, so I like to write scripts to handle them.</p>
+</div>
+<div class="paragraph">
+<p>In the past, I&#8217;d break out Sed and Awk for text processing and Ruby/Python for anything more involved. But these are not tools that I use day to day and I&#8217;d end up spending a lot of time trying to remember their syntaxes and (in the case of Ruby &amp; Python) their class libraries. That&#8217;s not helpful when you&#8217;re trying to <em>save</em> yourself time.</p>
+</div>
+<div class="paragraph">
+<p>Groovy&#8217;s an ideal scripting language for Java developers because it makes many of the things you need to do in scripts easy compared to Java, while using the same class library and a very similar syntax. You don&#8217;t have a big context switch going between Groovy and Java. Even if you&#8217;re an avid fan of a different scripting language, Groovy&#8217;s worth considering simply due to the JVM&#8217;s cross-platform support, which is handy in multi-platform environments.</p>
+</div>
+<div class="paragraph">
+<p>In this chapter, I&#8217;ll show some common use cases for Groovy scripting that will also help you to become familiar with more of the standard API. I&#8217;ll also stop along the way to discuss any language structures that appear, with a particular focus on an important feature called closures.</p>
+</div>
+<div class="sect2">
+<h3 id="_working_with_the_filesystem">4.1. Working with the filesystem</h3>
+<div class="paragraph">
+<p>A lot of scripting needs involve files: finding them, parsing them, creating them, moving them around, and so on. Java&#8217;s API has been traditionally weak in this area, which is why you&#8217;ll find libraries like <a href="http://commons.apache.org/proper/commons-io/">Commons IO</a> that provide a lot of extra utility and convenience. That changed with Java 8, which introduced some significant enhancements to the file APIs. Not everyone will be able to use Java 8 though, so I will give examples for both Java 6 and Java 8. Even if you&#8217;re able to use the latter, you will certainly find it useful to learn the old API because so many Groovy projects use them and will probably continue to use them.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start with the basic mechanism of reading and writing files. Imagine you have a comma-separated values (CSV) file containing the first and last names of authors along with the country and date of birth. Your first job is to print out all the names of the authors sorted alphabetically by their surnames (or family names). Here&#8217;s a quick script to do that using Java 8, which you can run in the Groovy console:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">java.nio.charset.Charset</span>                              <b class="conum">(1)</b>
+<span class="keyword">import</span> <span class="include">java.nio.file.Files</span>
+<span class="keyword">import</span> <span class="include">java.nio.file.FileSystems</span>
+
+<span class="keyword">def</span> lines = Files.readAllLines(
+        FileSystems.default.getPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">authors.csv</span><span class="delimiter">&quot;</span></span>),          <b class="conum">(2)</b>
+        <span class="predefined-type">Charset</span>.forName(<span class="string"><span class="delimiter">&quot;</span><span class="content">UTF-8</span><span class="delimiter">&quot;</span></span>))
+
+<span class="keyword">def</span> authorNames = <span class="type">[]</span>
+<span class="keyword">for</span> (l <span class="keyword">in</span> lines) {
+    <span class="keyword">def</span> authorDetails = l.split(<span class="regexp"><span class="delimiter">/</span><span class="char">\s</span><span class="content">*,</span><span class="char">\s</span><span class="content">*</span><span class="delimiter">/</span></span>)
+    authorNames &lt;&lt; <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">${</span>authorDetails[<span class="integer">1</span>]<span class="inline-delimiter">}</span></span><span class="content">, </span><span class="inline"><span class="inline-delimiter">${</span>authorDetails[<span class="integer">0</span>]<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+}
+
+authorNames = authorNames.sort()
+<span class="keyword">for</span> (name <span class="keyword">in</span> authorNames) {
+    println name
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Most classes need importing before you can reference them</p>
+</li>
+<li>
+<p>Create a file path representing the location of the CSV file</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>There&#8217;s much to talk about here, starting with the core classes we&#8217;re using to work with the filesystem. The <code>FileSystems</code> class provides access to the default <code>FileSystem</code> of the current platform (Windows, Mac OS X, Linux, etc.), which in turn allows you to construct file paths represented by the <code>java.nio.file.Path</code> interface - a contract of behavior without an implementation. Those file paths are then used by the methods of the <code>Files</code> class to perform file operations, such as copying, reading, and listing directories. <code>Charset</code> is simply a representation of a character encoding such as ISO-8859-1 and UTF-8.</p>
+</div>
+<div class="paragraph">
+<p>Why do we import these classes? It&#8217;s to help avoid name clashes. Classes have a name and a package, also known as a namespace in other languages. This means you can have classes with the same name as long as they are in different packages. The result is that you have to tell Groovy (and Java) which class you are referring to in your code, and that&#8217;s what the <code>import</code> statement does.</p>
+</div>
+<div class="paragraph">
+<p>The <code>readAllLines()</code> method assumes that the target file is text with line breaks in it and produces a list of the lines of text. One interesting aspect of this particular method call is that I explicitly specify a character encoding. If you don&#8217;t provide one, the method assumes the text is encoded using the default platform encoding, which varies between Windows, Mac OS X and Linux. I like to use UTF-8 everywhere, but that may not be appropriate for you. It largely depends on who creates the files in the first place. Yes it&#8217;s a headache if you&#8217;re dealing with any non-ASCII characters, but you need to factor it in to your coding right from the start.</p>
+</div>
+<div class="paragraph">
+<p>The rest of the script uses features I introduced in the previous chapter. It simply breaks each line of text into its component parts, removing the commas in the process. The first name and last name for each entry are then combined into a single author name string, with the last name first. That means we can perform a natural order sort on the resulting list to get the names in last name order before then printing them all.</p>
+</div>
+<div class="paragraph">
+<p>Hopefully that&#8217;s all straightforward for you, even though the code for reading the file seems more verbose than is perhaps necessary. So what happens if you don&#8217;t have access to a Java 8 or newer JVM? In that case, you can use the old <code>java.io.File</code> class instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> lines = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">authors.csv</span><span class="delimiter">&quot;</span></span>).readLines(<span class="string"><span class="delimiter">&quot;</span><span class="content">UTF-8</span><span class="delimiter">&quot;</span></span>)
+
+<span class="keyword">def</span> authorNames = <span class="type">[]</span>
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve only shown the file reading code because that&#8217;s the only difference from the previous example. What&#8217;s striking is that I&#8217;ve somehow managed to replace 4 lines of code with just one. A big reason for this is the lack of imports, since I&#8217;m only using a single class this time, <code>File</code>, and Groovy doesn&#8217;t require you to import it. In fact, there are several core packages that don&#8217;t need to be imported because they&#8217;re so commonly used. Here&#8217;s a short list of those exceptions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>java.lang.*</code></p>
+</li>
+<li>
+<p><code>java.io.*</code></p>
+</li>
+<li>
+<p><code>java.net.*</code></p>
+</li>
+<li>
+<p><code>java.util.*</code></p>
+</li>
+<li>
+<p><code>java.math.BigDecimal</code></p>
+</li>
+<li>
+<p><code>java.math.BigInteger</code></p>
+</li>
+<li>
+<p><code>groovy.lang.*</code></p>
+</li>
+<li>
+<p><code>groovy.util.*</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These packages cover such classes as <code>File</code>, <code>String</code>, <code>List</code>, and <code>URL</code>, which means that your scripts become a lot cleaner without those <code>import</code> statements. One thing that newcomers may find confusing is how sub-packages are treated. Consider the classes associated with regular expressions, which I&#8217;ll talk more about later in this chapter. They reside in the package <code>java.util.regex</code>, which looks like a sub-package of <code>java.util</code>. In fact, packages aren&#8217;t hierarchical except in the way we developers interpret them. The concrete result is that you have to explicitly import a class like <code>java.util.regex.Pattern</code> because its not covered by the <code>java.util.*</code> auto import.</p>
+</div>
+<div class="paragraph">
+<p>Another factor in the reduced amount of code is that <code>File</code> is a simpler API. And that&#8217;s one reason why you will continue to see it, even with code that exclusively runs on Java 8 or above. One thing to bear in mind is that in this case, the <code>readLines()</code> method is provided by the Groovy JDK extensions rather than Java. I recommend that you peruse the <a href="http://docs.groovy-lang.org/docs/next/html/groovy-jdk/?java/io/File.html">Groovy JDK documentation</a> for <code>File</code> because you&#8217;ll find plenty of useful methods to try out.</p>
+</div>
+<div class="paragraph">
+<p>This all raises an obvious yet important question: Which API should you use? I would argue that you should move over to the new NIO classes as soon as you can. Although <code>File</code> is generally simpler and less verbose, which is fine for scripts with simple needs, the NIO API has several advantages. First, it&#8217;s easier to unit test as <code>Path</code> is an interface and you can implement your own mock <code>FileSystem</code> (or you can use an existing one such as <a href="https://github.com/google/jimfs">JIMFS</a>). Second, it integrates with Java 8 streams, allowing you to do things like lazily walk a directory tree.</p>
+</div>
+<div class="paragraph">
+<p>One way to reduce the clutter in the Java 8 version of the CSV script is to make use of some special <code>import</code> features. You can both alias a class, giving it a shorter name, and explicitly import static methods, meaning you don&#8217;t have to qualify them with the class name. Here&#8217;s a modified version of the script using these techniques:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.nio.file.Files.readAllLines</span>               <b class="conum">(1)</b>
+
+<span class="keyword">import</span> <span class="include">java.nio.charset.Charset</span> <span class="keyword">as</span> <span class="class">Ch</span>                        <b class="conum">(2)</b>
+<span class="keyword">import</span> <span class="include">java.nio.file.FileSystems</span> <span class="keyword">as</span> <span class="class">FS</span>
+
+<span class="keyword">def</span> lines = readAllLines(FS.default.getPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">authors.csv</span><span class="delimiter">&quot;</span></span>), Ch.forName(<span class="string"><span class="delimiter">&quot;</span><span class="content">UTF-8</span><span class="delimiter">&quot;</span></span>))
+
+<span class="keyword">def</span> authorNames = <span class="type">[]</span>
+...</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Allows us to call <code>readAllLines()</code> without qualifying with the class name</p>
+</li>
+<li>
+<p>Aliases the class name to something shorter</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>As you can see, the code for reading the lines of text from the file is now more readable, which is always good for aiding comprehension of your code. You&#8217;ll find static imports in Java as well, but the aliasing is specific to Groovy.</p>
+</div>
+<div class="paragraph">
+<p>I now want to move away from the kinds of scripts that you can run in the Groovy console to something a bit more useful: command line scripts. You can still write them in the Groovy console, but you must first save them to a file before you can run them from the command line.</p>
+</div>
+<div class="paragraph">
+<p>The first example harks back to the days of Apache Ant, a venerable build tool from the Java world. I often used its Filter task as a simple template engine, replacing occurrences of <code>@TOKEN@</code> with whatever parameter values I needed. It&#8217;s not hard to reproduce this behavior in a Groovy script, as you&#8217;ll see from the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">java.nio.file.FileSystems</span> <span class="keyword">as</span> <span class="class">FS</span>
+
+<span class="keyword">if</span> (args.size() != <span class="integer">1</span>) {
+    println <span class="string"><span class="delimiter">&quot;</span><span class="content">Incorrect number of arguments.</span><span class="delimiter">&quot;</span></span>
+    println <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>
+    println <span class="string"><span class="delimiter">&quot;</span><span class="content">USAGE: processTemplates TMPL_PATH</span><span class="delimiter">&quot;</span></span>
+    <span class="predefined-type">System</span>.exit(<span class="integer">1</span>)
+}
+
+<span class="directive">final</span> tokens = [                                             <b class="conum">(1)</b>
+    <span class="key">NAME</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Whizzbang</span><span class="delimiter">&quot;</span></span>,
+    <span class="key">CURRENT_DATE</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>()]
+<span class="directive">final</span> templatePath = FS.default.getPath(args[<span class="integer">0</span>])
+<span class="directive">final</span> sourceText = templatePath.getText(<span class="string"><span class="delimiter">&quot;</span><span class="content">UTF-8</span><span class="delimiter">&quot;</span></span>)
+
+<span class="keyword">def</span> processedText = sourceText
+<span class="keyword">for</span> (entry <span class="keyword">in</span> tokens) {
+    processedText = processedText.replace(                   <b class="conum">(2)</b>
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">@</span><span class="inline"><span class="inline-delimiter">${</span>entry.key<span class="inline-delimiter">}</span></span><span class="content">@</span><span class="delimiter">&quot;</span></span>,
+            entry.value.toString())
+}
+
+<span class="directive">final</span> outFile = FS.default.getPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">processed.txt</span><span class="delimiter">&quot;</span></span>)
+outFile.setText(processedText, <span class="string"><span class="delimiter">&quot;</span><span class="content">UTF-8</span><span class="delimiter">&quot;</span></span>)                      <b class="conum">(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Hard code the replacement tokens</p>
+</li>
+<li>
+<p>Perform the token substitution using a standard JDK method</p>
+</li>
+<li>
+<p>Write the resulting text to a new (hard-coded) file</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You should by now be familiar with most of the code in the script. The key new feature is the <code>setText()</code> method, which allows you to easily write text to a file. If the file doesn&#8217;t exist, it gets created. Otherwise, its content is overwritten by the string you provide. The method also closes the file automatically, so you don&#8217;t have to worry about leaving file handles open.</p>
+</div>
+<div class="paragraph">
+<p>This works well for simple cases, but you often want to write to a file in chunks. Imagine you want to read records from a database table, perhaps process them, and then generate a CSV file containing one line per record. You could create the CSV in memory as a string and then write it out using <code>setText()</code>, but this is an inefficient use of memory and could take noticeably longer than writing each line to the file as you go. It depends on how many records you have.</p>
+</div>
+<div class="paragraph">
+<p>Fortunately, Groovy provides several convenience methods for writing to a file on an as-you-go basis. I&#8217;m using <code>withPrintWriter()</code> in the next example to do exactly that, while also ensuring that the underlying file is closed regardless of whether my code throws an exception or not. The script takes a path to a directory and then generates a CSV file containing the filename, file size, and creation date for each file in that directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">static</span> <span class="include">java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME</span>
+
+<span class="keyword">import</span> <span class="include">java.nio.file.Files</span>
+<span class="keyword">import</span> <span class="include">java.nio.file.FileSystems</span> <span class="keyword">as</span> <span class="class">FS</span>
+<span class="keyword">import</span> <span class="include">java.nio.file.Path</span>
+<span class="keyword">import</span> <span class="include">java.time.ZoneId</span>                                      <b class="conum">(1)</b>
+
+<span class="keyword">if</span> (args.size() != <span class="integer">1</span>) {
+    println <span class="string"><span class="delimiter">&quot;</span><span class="content">Incorrect number of arguments.</span><span class="delimiter">&quot;</span></span>
+    println <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>
+    println <span class="string"><span class="delimiter">&quot;</span><span class="content">USAGE: filesReport DIR_PATH</span><span class="delimiter">&quot;</span></span>
+    <span class="predefined-type">System</span>.exit(<span class="integer">1</span>)
+}
+
+<span class="directive">final</span> dirPath = FS.default.getPath(args[<span class="integer">0</span>])
+<span class="directive">final</span> files = Files.list(dirPath)
+
+<span class="directive">final</span> outFile = FS.default.getPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">files.csv</span><span class="delimiter">&quot;</span></span>)
+outFile.withPrintWriter(<span class="string"><span class="delimiter">&quot;</span><span class="content">UTF-8</span><span class="delimiter">&quot;</span></span>) { writer -&gt;                 <b class="conum">(2)</b>
+    <span class="keyword">for</span> (path <span class="keyword">in</span> files) {
+        writer.println(<span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">${</span>path.fileName<span class="inline-delimiter">}</span></span><span class="content">, </span><span class="inline"><span class="inline-delimiter">${</span>Files.size(path)<span class="inline-delimiter">}</span></span><span class="content">, </span><span class="inline"><span class="inline-delimiter">${</span>getCreationDate(path)<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)
+    }
+}
+
+println <span class="string"><span class="delimiter">&quot;</span><span class="content">Written report to </span><span class="inline"><span class="inline-delimiter">${</span>outFile<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+
+<span class="predefined-type">String</span> getCreationDate(Path path) {
+    <span class="directive">final</span> creationInstant = Files.getAttribute(path, <span class="string"><span class="delimiter">&quot;</span><span class="content">creationTime</span><span class="delimiter">&quot;</span></span>).toInstant()
+    <span class="keyword">return</span> ISO_OFFSET_DATE_TIME.format(creationInstant.atZone(ZoneId.systemDefault()))
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Use the Java 8+ Date &amp; Time API</p>
+</li>
+<li>
+<p>Generate the CSV file, with one line per source file</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This example doesn&#8217;t have many lines, but it does introduce two important features:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The Java 8+ Date and Time API</p>
+</li>
+<li>
+<p>Closures</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start with the new API.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dates_and_time">4.2. Dates and time</h3>
+<div class="paragraph">
+<p>Before Java 8, developers either got by with the <code>java.util.Date</code> and <code>java.util.Calendar</code> classes, or they used a third-party library called Joda Time. The latter was often the only choice for even moderately complex date and time work because the core JDK classes were awkward to use and underpowered.</p>
+</div>
+<div class="paragraph">
+<p>The Date and Time API brings coherence to working with dates in Java. Simple things are often easier to accomplish than with the old <code>Date</code> class, while you also gain greater control with more complex requirements. Still, the <code>Date</code> class should work just fine for the file creation dates in our example. So why use the <code>java.time.*</code> classes? For two reasons. First, the file NIO API gives us a <code>java.time.Instant</code> value rather than a <code>java.util.Date</code>. Second, I think you should prioritize the Date and Time API over <code>java.util.Date</code> for your own code because it&#8217;s a significant improvement over the older API. For example, the core classes are immutable and thread safe, unlike <code>Date</code> and <code>Calendar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Figure xxx shows you the most relevant classes of the Date and Time API for right now. The <code>Instant</code> class represents a fixed point in time, independent of calendars and dates. If people around the globe retrieved the current time as an <code>Instant</code> at the same time, they should all get the same value, Of course, this is unlikely as there will almost certainly be variations between the system clocks on their computers. But that&#8217;s the ideal.</p>
+</div>
+<div class="paragraph">
+<p>The <code>java.time.LocalDateTime</code> class is different in that it represents a (Gregorian) calendar date and time, such as New Year&#8217;s Day (1st January for any given year). This is not a fixed point in time because it depends on the time zone you&#8217;re interested in. New Year&#8217;s Day hits Australia well before the west coast of America. To correlate a date and time to an <code>Instant</code>, you need to use either <code>java.time.ZonedDateTime</code> or <code>java.time.OffsetTimeZone</code>, both of which incorporate the time zone information.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s often hard work dealing with calendars and keeping track of time zones, but we&#8217;re fortunate that the API makes life easy for our simple use case. The idea is to store the file creation date in the CSV file as an ISO 8601 date rather than an instant. To do that, we want to format the <code>Instant</code> we get from the <code>Files</code> class. The date formatters require dates rather than instants, though, so we use the <code>Instant.atZone()</code> method to perform the conversion using the system&#8217;s current time zone. We could also perform the conversion using the UTC time zone if we wanted. It all depends on whether we&#8217;re interested in which time zone the file was created in. For server-side work, I&#8217;d recommend almost always using UTC.</p>
+</div>
+<div class="paragraph">
+<p>The Date and Time API brings more to the table than just these classes. Durations and periods allow you to readily calculate deadlines and reminders among other things. Overall, it&#8217;s a richer API than we had previously in the JDK without it being laboriously hard to work with.</p>
+</div>
+<div class="paragraph">
+<p>I now want to go onto the second feature the script introduces: closures.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_closures">4.3. Closures</h3>
+<div class="paragraph">
+<p>Developers start using Groovy for a variety of reasons. I started because it was the language of the Grails web framework. But if we could narrow down why people then stayed with Groovy to a single language feature, I&#8217;m convinced it would be closures. It&#8217;s fairly easy these days to explain the basics of them because most of the popular languages have comparable features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ruby code blocks</p>
+</li>
+<li>
+<p>Javascript functions</p>
+</li>
+<li>
+<p>Java 8 lambdas</p>
+</li>
+<li>
+<p>Python functions and lambdas</p>
+</li>
+<li>
+<p>C# lambda expressions and anonymous functions</p>
+</li>
+<li>
+<p>Scala functions</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These aren&#8217;t all exactly the same feature, but they do allow for higher-order functions. If you&#8217;re not familiar with this term, it means that functions can themselves be arguments to other functions. Consider the example of filtering a list of words. You might want all the words that start with the letter 'p'. You might instead be interested words longer than 5 letters. Or perhaps you just want to remove all swear words using a dictionary. The only difference between each of these requirements is the filter constraint. Does the word start with a particular letter? Is it longer than a particular value? The algorithm for filtering the list is always the same, it&#8217;s only the constraint that changes.</p>
+</div>
+<div class="paragraph">
+<p>That constraint can be implemented as a standalone predicate function, i.e. a function that returns <code>true</code> or <code>false</code>. Let&#8217;s see what this looks like in Groovy code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">final</span> swearWords = [<span class="string"><span class="delimiter">&quot;</span><span class="content">flabbergasted</span><span class="delimiter">&quot;</span></span>] <span class="keyword">as</span> <span class="predefined-type">Set</span>
+<span class="directive">final</span> words = [<span class="string"><span class="delimiter">&quot;</span><span class="content">orange</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">sit</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">profit</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">flabbergasted</span><span class="delimiter">&quot;</span></span>,
+        <span class="string"><span class="delimiter">&quot;</span><span class="content">honorific</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">proposal</span><span class="delimiter">&quot;</span></span>]
+
+println words.findAll({ word -&gt; word.startsWith(<span class="string"><span class="delimiter">&quot;</span><span class="content">p</span><span class="delimiter">&quot;</span></span>) })
+println words.findAll({ word -&gt; word.size() &gt; <span class="integer">5</span> })
+println words.findAll({ word -&gt; !swearWords.contains(word) })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>findAll()</code> method is a Groovy JDK extension that performs collection filtering. In each of the above calls, it effectively applies the given predicate function (in this case a closure) to each word in the list and only retains the word if the function returns <code>true</code>. You can run the example to see the result.</p>
+</div>
+<div class="paragraph">
+<p>The basic form of a closure is the following:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{ &lt;args&gt; -&gt; &lt;function body&gt; }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So the curly braces delimit the closure literal, similar to the way square brackets delimit lists and maps. This can be a bit confusing because methods, loops, and conditions use curly braces as well. I generally ask myself this: are the curly braces part of an assignment or a method <em>call</em>? If so, then I have a closure. Assignments are easy to pick out:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>def predicateFn = { word -&gt; word.startsWith("p") }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Method calls tend to be harder to identify because Groovy supports several syntaxes. I&#8217;ll explain shortly, but first, one question you may be asking yourself is where the <code>word</code> argument comes from. How does it work? It&#8217;s important to understand that a closure&#8217;s argument list behaves just the same as a method&#8217;s. In other words, <code>word</code> only exists within the context of the closure itself. It&#8217;s the responsibility of the <code>findAll()</code> method to pass each word as the argument when calling the closure.</p>
+</div>
+<div class="paragraph">
+<p>To see what I mean, you can try invoking the closure yourself:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>def predicateFn = { word -&gt; word.startsWith("p") }
+predicateFn.call("petals")</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Executing this in the Groovy console will show a result of <code>true</code>, because "petal" starts with a 'p'. What happens if you try to call the closure with more than one argument? The following results in a <code>MissingMethodException</code> for <code>call()</code> because the number of arguments don&#8217;t match:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>def predicateFn = { word -&gt; word.startsWith("p") }
+predicateFn.call("petals", "badarg")</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If it&#8217;s easy to identify a closure that&#8217;s assigned to a variable, why is it harder when the closure is an argument of a method call? Let&#8217;s look at the first <code>findAll()</code> call from the list filtering example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>words.findAll({ word -&gt; word.startsWith("p") })</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s clear that <code>findAll()</code> is a method call because of the parentheses and the closure is defined within the parentheses. This makes the closure definition relatively obvious. But this is an uncommon syntax. The following are all more common alternatives:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>words.findAll() { word -&gt; word.startsWith("p") }
+words.findAll { word -&gt; word.startsWith("p") }
+words.findAll { word -&gt;
+    word.startsWith("p")
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of these, the second is probably the most common and it doesn&#8217;t even have any parentheses at all! What&#8217;s going on? This is simply syntax sugar for a very specific case. If the closure is the last (or only) argument of a method, it can be defined after the parentheses. If it&#8217;s the only argument, it&#8217;s common to dispense with the parentheses entirely.</p>
+</div>
+<div class="paragraph">
+<p>Given this information about closures, can you identify the one in the earlier example where we created a CSV file from a directory listing? If you remember, the script writes the lines of text to the file using the <code>withPrintWriter()</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">...
+final outFile = FS.default.getPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">files.csv</span><span class="delimiter">&quot;</span></span>)
+outFile.withPrintWriter(<span class="string"><span class="delimiter">&quot;</span><span class="content">UTF-8</span><span class="delimiter">&quot;</span></span>) { writer -&gt;
+    <span class="keyword">for</span> (path <span class="keyword">in</span> files) {
+        writer.println(<span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">${</span>path.fileName<span class="inline-delimiter">}</span></span><span class="content">, </span><span class="inline"><span class="inline-delimiter">${</span>Files.size(path)<span class="inline-delimiter">}</span></span><span class="content">, </span><span class="inline"><span class="inline-delimiter">${</span>getCreationDate(path)<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)
+    }
+}
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The closure begins with <code>{ writer &#8594; &#8230;&#8203;</code>. Under the hood, <code>withPrintWriter()</code> creates or opens the target file and creates a <code>java.io.PrintWriter</code> for it using the character encoding specified by the first argument. It then calls the second argument - the closure - passing the newly created writer as it&#8217;s argument. When the closure returns or throws an exception, <code>withPrintWriter()</code> closes the file. For Java developers, it&#8217;s worth noting that this is the Groovy alternative to Java&#8217;s <em>try-with-resources</em> statement, as that syntax isn&#8217;t supported by Groovy.</p>
+</div>
+<div class="paragraph">
+<p>A good way to learn and understand something is through plenty of examples. Two (filtering and writing to a file) aren&#8217;t really sufficient. To rectify that, I&#8217;m going to revisit some examples from earlier chapters and try to rewrite them using closures where appropriate. This should give you an idea of an alternate approach to thinking about coding problems and how to solve them.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_revisiting_earlier_examples">4.4. Revisiting earlier examples</h3>
+<div class="paragraph">
+<p>A lot of the examples you saw in the previous chapter have more concise and readable implementations once you start thinking in terms of higher order functions. Take the example for counting the number of vowels in a string. Instead of reaching immediately for a loop to solve the problem, think about what we want to achieve: counting characters. Which characters? Vowels. This is a similar problem to filtering a word list, except this time the algorithm is counting. The predicate simply determines whether a particular character should be counted or not. Is there a method available to do this?</p>
+</div>
+<div class="paragraph">
+<p>If you check out the Groovy JDK documentation, you&#8217;ll find a <code>count()</code> method for <code>CharSequence</code>. The problem is that it only counts occurences of a specified string. What we need is the <code>Iterable.count(Closure)</code> method (the <code>groovy.lang.Closure</code> type is one way to identify a method that accepts closure arguments). Since <code>CharSequence</code> is not an <code>Iterable</code>, we first have to convert it to one using <code>iterator()</code>. We can then perform the count, as demonstrated here:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> text = <span class="string"><span class="delimiter">&quot;</span><span class="content">Jack Rabbit Slims Twist Contest</span><span class="delimiter">&quot;</span></span>
+
+<span class="directive">final</span> vowels = <span class="string"><span class="delimiter">&quot;</span><span class="content">aeiou</span><span class="delimiter">&quot;</span></span>
+<span class="directive">final</span> vowelCount = text.iterator().count { vowels.contains(<span class="local-variable">it</span>.toLowerCase()) }
+
+println <span class="string"><span class="delimiter">&quot;</span><span class="content">Number of vowels: </span><span class="delimiter">&quot;</span></span> + vowelCount</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>What was originally 5 lines of a loop is now a single line. The example is also easier to reason about because the code is no longer cluttered with the mechanics of how to count the vowels. The focus here is <em>what</em> we want to achieve, not <em>how</em>.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Implicit closure argument</div>
+<div class="paragraph">
+<p>One new element introduced by the previous example is the lack of an explicit argument for the <code>count()</code> closure. There&#8217;s no <code>&#8594;</code> that separates the argument list from the closure body. This is a special syntax that&#8217;s useful for very short closure implementations, typically one-liners. If you don&#8217;t specify an argument list, an implicit argument called <code>it</code> becomes available.</p>
+</div>
+<div class="paragraph">
+<p>The implicit variable form only makes sense for methods that pass a single argument to the closure, such as <code>each()</code>, <code>collect()</code>, and <code>count()</code>. It also works with methods that pass no arguments at all, but then <code>it</code> will be <code>null</code>.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>One thing you&#8217;ll quickly realise is how useful closures are in the world of collections. Consider the <a href="#wordStats">first example of section 3.2</a> [xcheck] calculates some statistics about a list of words using a loop. Although the implementation is efficient in terms of there only being a single loop, it&#8217;s not obvious at first glance what it&#8217;s trying to achieve.</p>
+</div>
+<div class="paragraph">
+<p>A better approach in terms of code comprehension is to use some Groovy JDK extension methods for calculating the maximum, minimum and sum of values in a collection. The key point is that we&#8217;re not after the maximum word in this case - you could interpret this as the last word alphabetically perhaps - but the longest word. That&#8217;s where closures come in, as you can see from this alternate implementation of that example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">final</span> words = [<span class="string"><span class="delimiter">&quot;</span><span class="content">orange</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">sit</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">flabbergasted</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">honorific</span><span class="delimiter">&quot;</span></span>]
+
+println <span class="string"><span class="delimiter">&quot;</span><span class="content">Min word length:  </span><span class="inline"><span class="inline-delimiter">${</span>words.min { <span class="local-variable">it</span>.size() }.size()<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>         <b class="conum">(1)</b>
+println <span class="string"><span class="delimiter">&quot;</span><span class="content">Max word length:  </span><span class="inline"><span class="inline-delimiter">${</span>words.max { <span class="local-variable">it</span>.size() }.size()<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>
+println <span class="string"><span class="delimiter">&quot;</span><span class="content">Avg word length:  </span><span class="inline"><span class="inline-delimiter">${</span>words.sum { <span class="local-variable">it</span>.size() } / words.size()<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p><code>min()</code> and <code>max()</code> return the relevant collection element, i.e. a word in this case, so we need to call <code>size()</code> again to get its length</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In other words, we can specify exactly what property of the values in the collection we&#8217;re interested in by passing a closure to <code>min()</code>, <code>max()</code>, and <code>sum()</code> that extracts the relevant information. If we were interested in the number of vowels in the words instead, we could implement a <code>vowelCount()</code> method and use that from the closure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">...
+println words.sum { vowelCount(<span class="local-variable">it</span>) }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The last example I want to revisit is the method for <a href="#powersOfTwo">calculating the power of twos</a>. I originally showed you an example based on a for loop, but let&#8217;s now take a different tack. Consider what result we want: a list of elements of the form 2<sup>x</sup>, where <code>x</code> is a range of numbers 0 to <code>n</code>. Given a sequence of numbers (<code>0..n</code>), applying the function 2<sup>x</sup> to each of the numbers in that sequence will generate a new sequence containing the required powers of two.</p>
+</div>
+<div class="paragraph">
+<p>In code form, this looks like</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">List</span> powersOfTwo(<span class="type">int</span> n) {
+    <span class="keyword">return</span> (<span class="integer">0</span>..n).collect { <span class="integer">2</span> ** <span class="local-variable">it</span> }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>collect()</code> method is a general way of mapping the elements in one sequence to a new sequence. For example a list of words to a list of their lengths. Or sequence of integers to a sequence of their doubles. The actual mapping is defined by the closure, which acts as the mapping function.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re new to this style of programming, you may wonder how useful such a method could be in your day-to-day development. I think you&#8217;ll find you use it regularly, along with many of the other closure-based extensions to the JDK. That&#8217;s certainly been my experience, particularly as we often work a lot with collections.</p>
+</div>
+<div class="paragraph">
+<p>There is one complication to this whole area of Groovy. Java originally had nothing like the <code>collect()</code> method prior to Java 8, but that all changed with the introduction of lambda functions and the Streams API. You now have an alternative. Here&#8217;s a Groovy version of the powers of two method using that API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">java.util.stream.Collectors</span>
+
+<span class="predefined-type">List</span> powersOfTwo(<span class="type">int</span> n) {
+    <span class="keyword">return</span> (<span class="integer">0</span>..n).stream().map { <span class="integer">2</span> ** <span class="local-variable">it</span> }.collect(Collectors.toList())
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are several important differences between this example and the previous one:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You have to convert a collection to a stream before you can use the functional methods</p>
+</li>
+<li>
+<p>Java&#8217;s <code>map()</code> method is equivalent to Groovy&#8217;s <code>collect()</code></p>
+</li>
+<li>
+<p>Use Java&#8217;s <code>collect()</code> method to convert a stream back to a collection</p>
+</li>
+<li>
+<p>Java&#8217;s streams are lazy (unlike collections), so you can use them to work with infinite sequences</p>
+</li>
+<li>
+<p>You can use a Groovy closure wherever Java 8 allows a lambda function</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So which API should you use? The Groovy Collections extensions or Java 8&#8217;s Streams API? If you have the option, I think the Streams API is more flexible and has more standard names for many of its methods (<code>map()</code> vs <code>collect()</code>, <code>filter()</code> vs <code>findAll()</code>, etc.). They are also type safe, which can be very useful if you like to use the <code>@TypeChecked</code> or <code>@CompileStatic</code> annotations that I discuss later [xcheck] or like your IDE to know what the types of the closure arguments are without explicitly declaring them. The main cost is the small additional complexity of converting to and fro between collections and streams.</p>
+</div>
+<div class="paragraph">
+<p>Ultimately, both APIs provide an extra avenue of expressiveness for your code. If both satisfy a set of given requirements, just use the one that you&#8217;re most comfortable with.</p>
+</div>
+<div class="paragraph">
+<p>I hope I&#8217;ve given you a good idea of just what you can achieve with Groovy when it comes to scripting, and how easy it can be. I&#8217;ve touched on the filesystem and date APIs and explored collections a bit further with closures. All that&#8217;s left for you to do is explore the API documentation yourself now that you have the information you need to navigate those waters. I&#8217;m also hoping that you are at least starting to get a grasp of what closures are and how they can help. You will find extensive use of them throughout this book and in most Groovy code you&#8217;ll come across, so it&#8217;s an important topic.</p>
+</div>
+<div class="paragraph">
+<p>In the next chapter I want to move beyond simple scripting and see how you can incorporate Groovy into a project, such as an command line or web application.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-04-01 12:08:23 BST
+Last updated 2015-05-26 16:49:04 BST
 </div>
 </div>
 </body>

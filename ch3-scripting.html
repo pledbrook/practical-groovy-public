@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.2">
-<title>First steps</title>
+<title>Doing odd jobs (scripting)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -502,539 +502,568 @@ table.CodeRay td.code>pre{padding:0}
 </head>
 <body class="book">
 <div id="header">
-<h1>First steps</h1>
+<h1>Doing odd jobs (scripting)</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the tech world, it&#8217;s fairly common to hear the phrase "yak shaving". This represents the kind of situation in which you end up doing a lot of setup work in order to achieve what you originally intended. In the case of Groovy, it normally entails installing the Java Development Kit if you haven&#8217;t already done so, followed by Groovy itself. Fortunately, you can bypass all that by using the Groovy Web Console, which is a browser-based application for executing Groovy scripts.</p>
+<p>As software developers, we typically build applications and systems. And yet we often find ourselves doing miscellaneous other tasks that involve processing text files, fixing databases, generating reports, etc. Those tasks may even need to be repeated in the future. Such tasks can be laborious and error prone when performed manually, so I like to write scripts to handle them.</p>
 </div>
 <div class="paragraph">
-<p>You can find the app at the address <a href="http://groovyconsole.appspot.com/" class="bare">http://groovyconsole.appspot.com/</a>. You should see the page shown in figure 1.1.</p>
+<p>In the past, I&#8217;d break out Sed and Awk for text processing and Ruby/Python for anything more involved. But these are not tools that I use day to day and I&#8217;d end up spending a lot of time trying to remember their syntaxes and (in the case of Ruby &amp; Python) their class libraries. That&#8217;s not helpful when you&#8217;re trying to <em>save</em> yourself time.</p>
 </div>
 <div class="paragraph">
-<p>The text editor component allows you to write Groovy that you can then execute. Try it now by entering the code</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>12 + 5</code></pre>
-</div>
+<p>Groovy&#8217;s an ideal scripting language for Java developers because it makes many of the things you need to do in scripts easy compared to Java, while using the same class library and a very similar syntax. You don&#8217;t have a big context switch going between Groovy and Java. Even if you&#8217;re an avid fan of a different scripting language, Groovy&#8217;s worth considering simply due to the JVM&#8217;s cross-platform support, which is handy in multi-platform environments.</p>
 </div>
 <div class="paragraph">
-<p>and clicking on the Execute script link. You&#8217;ll see the result "17" displayed in the Result tab.</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s now try the classic Hello World example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>println "Hello world!"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now when you execute the script you&#8217;ll see the "Hello world!" text displayed in the Output tab. What&#8217;s the difference between the two tabs? The Result tab displays the value of the last expression in the script, whereas the Output tab displays anything that would normally go to the terminal or command prompt (stdout in C parlance). You can test this out by adding the "12 + 5" line to the end of the Hello World script: you should see something in both the Result tab and the Output tab.</p>
-</div>
-<div class="paragraph">
-<p>At this point, you have two choices:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Continue with the Groovy Web Console for now and skip to section TODO</p>
-</li>
-<li>
-<p>Read the next section on installing Groovy on your own computer</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>You will want to install Groovy at some point and it&#8217;s usually a straightforward process. On the other hand, it is an extra step that you may not need just to get started with the language. If you want to be able to work offline or run scripts locally, then you should definitely install Groovy now. Otherwise either option is fine.</p>
+<p>In this chapter, I&#8217;ll show some common use cases for Groovy scripting that will also help you to become familiar with more of the standard API. I&#8217;ll also stop along the way to discuss any language structures that appear, with a particular focus on an important feature called closures.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_installing_groovy">Installing Groovy</h2>
+<h2 id="_working_with_the_filesystem">Working with the filesystem</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before I explain how to install and set up Groovy, consider this: why would you need to install anything? This is an important question as you don&#8217;t necessarily need a Groovy installation in order to develop with Groovy. Build tools and IDEs can quite happily compile Groovy source files without one. What you absolutely must have, though, is a Java runtime installed.</p>
+<p>A lot of scripting needs involve files: finding them, parsing them, creating them, moving them around, and so on. Java&#8217;s API has been traditionally weak in this area, which is why you&#8217;ll find libraries like <a href="http://commons.apache.org/proper/commons-io/">Commons IO</a> that provide a lot of extra utility and convenience. That changed with Java 8, which introduced some significant enhancements to the file APIs. Not everyone will be able to use Java 8 though, so I will give examples for both Java 6 and Java 8. Even if you&#8217;re able to use the latter, you will certainly find it useful to learn the old API because so many Groovy projects use them and will probably continue to use them.</p>
 </div>
 <div class="paragraph">
-<p>The Java platform comes in several forms, but for the sake of simplicity I want to focus on two of them: the Java Runtime Environment (JRE) and the Java Development Kit (JDK). The first of these allows you to run Java applications and applets (those things that run in a browser and require the Java plugin). The JDK allows you to build Java applications, as well as run them, and it&#8217;s the best option for a Groovy developer.</p>
-</div>
-<div class="paragraph">
-<p>To get hold of the JDK, head to the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">download page</a> on Oracle&#8217;s website and follow the links. Remember, you only need the basic JDK for your platform. Once you have downloaded the package and installed the JDK (I recommend using an installation path without spaces), you just need to set up an environment variable:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>JAVA_HOME=&lt;path to JDK&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you&#8217;re unsure how to do this, a simple web search for "setting environment variable" combined with your platform will produce plenty of links to help out.</p>
-</div>
-<div class="paragraph">
-<p>That&#8217;s all you need as far as the Java side goes. So what about Groovy? You&#8217;ll need to install it for the purposes of this book because you will need access to the associated tools, in particular the Groovy console. You also need a Groovy installation if you want to run standalone scripts, which comes in very handy.</p>
-</div>
-<div class="paragraph">
-<p>You can install Groovy in a number of ways:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>On Windows, <a href="http://groovy-lang.org/download.html">download and run the installer</a>.</p>
-</li>
-<li>
-<p>On Mac OS X, you can use Homebrew or MacPorts: <code>brew install groovy</code> or <code>sudo port install groovy</code>.</p>
-</li>
-<li>
-<p>On all platforms that have Bash, including Cygwin, you can use the <a href="http://gvmtool.net/">Groovy Environment Manager (GVM)</a>, which allows you to install multiple versions of Groovy as well as other tools such as Grails and Gradle.</p>
-</li>
-<li>
-<p>Alternatively, download the platform-agnostic binary distribution, unpack it, and manually set up the necessary environment variables.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>My preferred option is GVM as it makes installing Groovy trivially easy and new versions of Groovy (including beta and other milestone releases) become available through it promptly. The fact you can have different versions of Groovy active in different terminals is an added bonus.</p>
-</div>
-<div class="paragraph">
-<p>Whichever approach you take, you will end up with a <code>GROOVY_HOME</code> environment variable containing the location of the current Groovy installation. Your <code>PATH</code> environment variable will also include the path to the Groovy installation&#8217;s 'bin' directory, since that&#8217;s where all the useful tools are. You can verify the installation by running</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>groovy -e "println 'Hello'"</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>in a terminal. If everything is working, this will println the line "Hello" to the terminal. If you instead get an error message about the <code>groovy</code> command not being found, then check your <code>PATH</code> environment variable as it&#8217;s probably not initialized properly.</p>
-</div>
-<div class="paragraph">
-<p>So what does a Groovy installation give you? The main tools of interest are:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><code>groovy</code> - allows you to run Groovy scripts from the command line.</p>
-</li>
-<li>
-<p><code>groovysh</code> - starts an interactive shell for executing Groovy statements.</p>
-</li>
-<li>
-<p><code>groovyConsole</code> - starts a desktop version of the Groovy Web Console, with syntax highlighting in the editor pane.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>You will start with the Groovy console as it&#8217;s the easiest way to learn Groovy through practice. Just start it up with the command</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>groovyConsole</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>and you&#8217;ll then see the window shown in figure 1.3 TODO.</p>
-</div>
-<div class="paragraph">
-<p>The Groovy console has several options available, including loading and saving scripts as well as the standard cut, copy and paste. The most important options are</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>View &gt; Clear Output - clears the output pane of any existing text from previous script executions.</p>
-</li>
-<li>
-<p>View &gt; Show Script in Ouput - enabled by default, you should uncheck this so that the output pane isn&#8217;t polluted with the text of the script itself.</p>
-</li>
-<li>
-<p>Script &gt; Run - executes the script.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>I recommend you remember the keyboard shortcuts for clearing the output pane and executing the script as you&#8217;ll be using them a lot.</p>
-</div>
-<div class="paragraph">
-<p>You&#8217;re now all set to start coding.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_groovy_as_a_calculator">Groovy as a calculator</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>I&#8217;m sure your OS has a calculator app, as do most smartphones. Still, using Groovy as a calculator is a gentle way to introduce some of the basic syntax and semantics of the language. You already saw a simple addition. What happens if you now try</p>
+<p>Let&#8217;s start with the basic mechanism of reading and writing files. Imagine you have a comma-separated values (CSV) file containing the first and last names of authors along with the country and date of birth. Your first job is to print out all the names of the authors sorted alphabetically by their surnames (or family names). Here&#8217;s a quick script to do that using Java 8, which you can run in the Groovy console:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>13 + 3 / 4</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>? In most programming languages you would end up with the result 13.75 (although Java would give you 13), and that&#8217;s exactly what you get with Groovy. In other words, the division has occurred first. To do the sum first, use parentheses to control the order in which the operators are evaluated:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>(13 + 3) / 4</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The above results in 4. Groovy supports all the usual suspects when it comes to arithmetic operators, such as <code>-</code> (subtract), <code>*</code> (multiply), and <code>%</code> (modulo). Unlike Java, it also supports an exponentiation operator:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>2 ** 8</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This gives the result of two to the power of 8. If, like me, you&#8217;ve spent too much time in the past using Visual Basic, note that <code>^</code> does <em>not</em> perform an exponentiation. It&#8217;s the XOR bitwise operator. You can see a complete list of operators in appendix A.</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s now introduce some verification into the calculations. First, here is a simple equality comparison:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>8 + 4 == 12</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The result now is a word: <code>true</code>. This is a literal boolean value whose counterpart, as you&#8217;d expect, is <code>false</code>.</p>
-</div>
-<div class="paragraph">
-<p>To verify that the expression does indeed result in <code>true</code>, you can prefix it with the keyword <code>assert</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>assert 8 + 4 == 12</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>When you run this, nothing different appears to happen. But what if the expression doesn&#8217;t evaluate to <code>true</code>? Try</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>assert 8 + 4 == 11</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The expression is obviously now false and this time you see an error message:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Assertion failed:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>assert 8 + 4 == 11
-         |   |
-         12  false</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>at ConsoleScript6.run(ConsoleScript6:1)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>What&#8217;s interesting about this error is that it shows the values of all parts of the expression, including both the left hand and right hand sides. As you might imagine, this makes it relatively easy to diagnose problems in your code. Assertions are particularly useful in unit tests and other verification-based scenarios.</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s now try out the Pythagorean Theorem. You do remember that from school, don&#8217;t you? In case it&#8217;s been too long, it states that the square of the hypotenuse of a right-angled triangle is equal to the sum of the squares of the other two sides. In code:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>def a = 3
-def b = 4
-def result = Math.sqrt(a ** 2 + b ** 2)
+<pre class="CodeRay highlight"><code>import java.nio.charset.Charset                              <b class="conum">(1)</b>
+import java.nio.file.Files
+import java.nio.file.FileSystems
 
-assert result == 5
-println result</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This little example introduces some new concepts and syntax. First, it declares and uses a few local variables using the keyword <code>def</code>. Variables declared in this way can contain values of any type, not just numbers. In other words, the variables are untyped.</p>
-</div>
-<div class="paragraph">
-<p>The second item of interest is the <code>sqrt()</code> method call. The syntax is absolutely identical to Java&#8217;s and in this case you&#8217;re seeing a <em>static</em> method. This is called on the class itself (<code>lava.lang.Math</code>) rather than on an instance of that class.</p>
-</div>
-<div class="paragraph">
-<p>Last, but not least, the assertion fails to throw an error despite <code>result</code> being a floating point number. Groovy&#8217;s <code>==</code> operator is largely value based so that <code>5</code> and <code>5.0</code> are considered the same despite being different types. This particular behavior is quite different to that of Java, which is very strict on equality.</p>
-</div>
-<div class="paragraph">
-<p>Here&#8217;s another example with some more method calls. It takes a hexidecimal string, converts it to an integer, divides that value by 2 (using integer division) and then prints out the hexidecimal representation of the result:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>def n = Integer.parseInt("ED59", 16)
-n = n.intdiv(2)
-println Integer.toHexString(n)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The output is simply the string "76ac". Hexidecimal representations are fairly common in our line of work, so it&#8217;s useful to know that you can easily transform them to and from integers.</p>
-</div>
-<div class="paragraph">
-<p>The above example looks unassuming, but it highlights a common struggle with Groovy: where do these methods come from? And where are they documented? To answer those questions, you first need to know what type you&#8217;re dealing with. With static methods that&#8217;s straightforward as you can see the type directly (<code>Integer</code> in the above example, which is short for <code>java.lang.Integer</code> - the fully qualified class name). It&#8217;s not much harder for instance methods as you can always see the type of an object by calling the method <code>getClass()</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>println 10.getClass()
-println 1.2.getClass()
-println "Hello".getClass()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Executing this simple script results in the following output:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>class java.lang.Integer
-class java.math.BigDecimal
-class java.lang.String</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>All three types are part of the core Java class library, which is fantastic if you already know Java. (And if you already know Java, you might be surprised at the floating point type - I&#8217;ll talk about that soon TODO). What this means for you is that you&#8217;ll need to bookmark the <a href="https://docs.oracle.com/javase/8/docs/api/">Java API documentation</a> when coding in Groovy. You&#8217;ll find the <code>parseInt()</code> and <code>toHexString()</code> methods described under <code>java.lang.Integer</code>. What you won&#8217;t find is the <code>intdiv()</code> method.</p>
-</div>
-<div class="paragraph">
-<p>What? Where does that come from then? One thing you have to remember is that one of Groovy&#8217;s aims is to be as close to Java as possible while providing user-friendly features. What this means in practice is that Groovy extends the core Java class library with methods and properties that it thinks are particularly useful. <code>intdiv()</code> is one of those methods and you can find it nestled away in the <a href="http://groovy-lang.org/docs/latest/html/groovy-jdk/">Groovy JDK documentation</a>.</p>
-</div>
-<div class="paragraph">
-<p>The Groovy JDK is the name given to all the extra properties and methods that Groovy adds to the core Java classes. The layout of the documentation is similar to that of the Java API docs, and so you just need to select the Java class you&#8217;re interested in to see what Groovy adds. Look under <a href="http://docs.groovy-lang.org/docs/next/html/groovy-jdk/?java/lang/Number.html"><code>java.lang.Number</code></a> (the super class of <code>Integer</code>) and you&#8217;ll find <code>intdiv()</code>. Unfortunately it&#8217;s not always obvious which type to look at for any given property or method, but it becomes easier as you get to know both Groovy and the Java class library.</p>
-</div>
-<div class="paragraph">
-<p>There may be something nagging you by this point. All the method calls, such as <code>getClass()</code> and <code>sqrt()</code>, have parentheses. So what about <code>println()</code>? Isn&#8217;t that a method call too? If so, where are the parentheses?</p>
-</div>
-<div class="paragraph">
-<p><code>println()</code> is indeed a method call, equivalent to <code>System.out.println()</code> in Java. Unlike any other method, though, it can be called as if it were a global function. It doesn&#8217;t need to be called on an object or class like all other methods. As for the lack of parentheses, Groovy doesn&#8217;t require them in certain circumstances. It&#8217;s too early in your Groovy career to discuss exactly what those circumstances are, so for the moment, use parentheses for all method calls and only leave them out for <code>println()</code> calls.</p>
-</div>
-<div class="paragraph">
-<p>One important point to be aware of is that the parentheses are required if you don&#8217;t pass any arguments to <code>println()</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>println "Hello"
-println()
-println "Goodbye"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>What happens if you don&#8217;t have parentheses? Try it out:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>println "Hello"
-println
-println "Goodbye"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You will now see an error message rather than the "Goodbye" text:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>groovy.lang.MissingPropertyException: No such property: println for class: hello-goodbye</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note the class name of the exception: <code>MissingPropertyException</code>. Groovy is looking for a <em>property</em> called <code>println</code>, not a method. I&#8217;ll come to properties soon, but for completeness, try this example where the parentheses are included but the method name is incorrect:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>println "Hello"
-print1n()
-println "Goodbye"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This time, you will see a different error:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>groovy.lang.MissingMethodException: No signature of method: hello-goodbye.print1n()
-➥ is applicable for argument types: () values: []
-Possible solutions: println(), println(), println(java.lang.Object),
-➥ println(java.lang.Object), println(java.io.PrintWriter), print(java.lang.Object)
-        at hello-goodbye.run(hello-goodbye.groovy:2)</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note how Groovy is stating that it can&#8217;t find a method this time. It also rather handily displays a list of known methods that are a close match to the unknown method name just in case you have a simple typo or can&#8217;t remember the correct name properly. You should always read the exception messages carefully as they are tremendously useful in determining why something isn&#8217;t working.</p>
-</div>
-<div class="paragraph">
-<p>Another interesting facet of the language is that you&#8217;re seeing runtime errors for unknown methods and properties. This is because Groovy resolves properties and methods at runtime by default rather than at compile time. This can be changed, as you&#8217;ll see in chapter TODO. You can also make use of this runtime resolution to do interesting things such as creating builders (chapter TODO) or mock objects (chapter TODO).</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s return to the world of numbers and look at some more examples. In the following script, I perform a floating-point multiplication repeatedly and time how long it takes:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>def start = System.currentTimeMillis()  <b class="conum">(1)</b>
-def n = 100.0
-for (i in 0..&lt;100000) {             <b class="conum">(2)</b>
-    n = n * 0.95
+def lines = Files.readAllLines(
+        FileSystems.default.getPath("authors.csv"),          <b class="conum">(2)</b>
+        Charset.forName("UTF-8"))
+
+def authorNames = []
+for (l in lines) {
+    def authorDetails = l.split(/\s*,\s*/)
+    authorNames &lt;&lt; "${authorDetails[1]}, ${authorDetails[0]}"
 }
 
-println "n = ${n}"                      <b class="conum">(3)</b>
-println "Time taken: ${(System.currentTimeMillis() - start)}ms"</code></pre>
+authorNames = authorNames.sort()
+for (name in authorNames) {
+    println name
+}</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <ol>
 <li>
-<p>Gets the current number of milliseconds since the Unix epoch (1st Jan 1970)</p>
+<p>Most classes need importing before you can reference them</p>
 </li>
 <li>
-<p>Iterates over the integers 0 to 100,000</p>
-</li>
-<li>
-<p>Displays the value of <code>n</code> within this string</p>
+<p>Create a file path representing the location of the CSV file</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Ignore the <code>for</code> loop and <code>println()</code> statements for the moment and just focus on the results of executing the script. First, the number it displays is ridiculously long. When you run it, you&#8217;ll see what I mean. Second, it takes a while to finish - around 2.5 seconds on my laptop. Now add a <code>D</code> suffix to the literal <code>100.0</code> and run the script again:</p>
+<p>There&#8217;s much to talk about here, starting with the core classes we&#8217;re using to work with the filesystem. The <code>FileSystems</code> class provides access to the default <code>FileSystem</code> of the current platform (Windows, Mac OS X, Linux, etc.), which in turn allows you to construct file paths represented by the <code>java.nio.file.Path</code> interface - a contract of behavior without an implementation. Those file paths are then used by the methods of the <code>Files</code> class to perform file operations, such as copying, reading, and listing directories. <code>Charset</code> is simply a representation of a character encoding such as ISO-8859-1 and UTF-8.</p>
+</div>
+<div class="paragraph">
+<p>Why do we import these classes? It&#8217;s to help avoid name clashes. Classes have a name and a package, also known as a namespace in other languages. This means you can have classes with the same name as long as they are in different packages. The result is that you have to tell Groovy (and Java) which class you are referring to in your code, and that&#8217;s what the <code>import</code> statement does.</p>
+</div>
+<div class="paragraph">
+<p>The <code>readAllLines()</code> method assumes that the target file is text with line breaks in it and produces a list of the lines of text. One interesting aspect of this particular method call is that I explicitly specify a character encoding. If you don&#8217;t provide one, the method assumes the text is encoded using the default platform encoding, which varies between Windows, Mac OS X and Linux. I like to use UTF-8 everywhere, but that may not be appropriate for you. It largely depends on who creates the files in the first place. Yes it&#8217;s a headache if you&#8217;re dealing with any non-ASCII characters, but you need to factor it in to your coding right from the start.</p>
+</div>
+<div class="paragraph">
+<p>The rest of the script uses features I introduced in the previous chapter. It simply breaks each line of text into its component parts, removing the commas in the process. The first name and last name for each entry are then combined into a single author name string, with the last name first. That means we can perform a natural order sort on the resulting list to get the names in last name order before then printing them all.</p>
+</div>
+<div class="paragraph">
+<p>Hopefully that&#8217;s all straightforward for you, even though the code for reading the file seems more verbose than is perhaps necessary. So what happens if you don&#8217;t have access to a Java 8 or newer JVM? In that case, you can use the old <code>java.io.File</code> class instead:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>...
-def n = 100.0D
+<pre class="CodeRay highlight"><code>def lines = new File("authors.csv").readLines("UTF-8")
+
+def authorNames = []
 ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This time the number is significantly shorter and, more to the point, different. The script also finishes much faster - 33ms for me. What&#8217;s going on? It all boils down to the number types being used. When you look at the classes behind the two number literals:</p>
+<p>I&#8217;ve only shown the file reading code because that&#8217;s the only difference from the previous example. What&#8217;s striking is that I&#8217;ve somehow managed to replace 4 lines of code with just one. A big reason for this is the lack of imports, since I&#8217;m only using a single class this time, <code>File</code>, and Groovy doesn&#8217;t require you to import it. In fact, there are several core packages that don&#8217;t need to be imported because they&#8217;re so commonly used. Here&#8217;s a short list of those exceptions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>java.lang.*</code></p>
+</li>
+<li>
+<p><code>java.io.*</code></p>
+</li>
+<li>
+<p><code>java.net.*</code></p>
+</li>
+<li>
+<p><code>java.util.*</code></p>
+</li>
+<li>
+<p><code>java.math.BigDecimal</code></p>
+</li>
+<li>
+<p><code>java.math.BigInteger</code></p>
+</li>
+<li>
+<p><code>groovy.lang.*</code></p>
+</li>
+<li>
+<p><code>groovy.util.*</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These packages cover such classes as <code>File</code>, <code>String</code>, <code>List</code>, and <code>URL</code>, which means that your scripts become a lot cleaner without those <code>import</code> statements. One thing that newcomers may find confusing is how sub-packages are treated. Consider the classes associated with regular expressions, which I&#8217;ll talk more about later in this chapter. They reside in the package <code>java.util.regex</code>, which looks like a sub-package of <code>java.util</code>. In fact, packages aren&#8217;t hierarchical except in the way we developers interpret them. The concrete result is that you have to explicitly import a class like <code>java.util.regex.Pattern</code> because its not covered by the <code>java.util.*</code> auto import.</p>
+</div>
+<div class="paragraph">
+<p>Another factor in the reduced amount of code is that <code>File</code> is a simpler API. And that&#8217;s one reason why you will continue to see it, even with code that exclusively runs on Java 8 or above. One thing to bear in mind is that in this case, the <code>readLines()</code> method is provided by the Groovy JDK extensions rather than Java. I recommend that you peruse the <a href="http://docs.groovy-lang.org/docs/next/html/groovy-jdk/?java/io/File.html">Groovy JDK documentation</a> for <code>File</code> because you&#8217;ll find plenty of useful methods to try out.</p>
+</div>
+<div class="paragraph">
+<p>This all raises an obvious yet important question: Which API should you use? I would argue that you should move over to the new NIO classes as soon as you can. Although <code>File</code> is generally simpler and less verbose, which is fine for scripts with simple needs, the NIO API has several advantages. First, it&#8217;s easier to unit test as <code>Path</code> is an interface and you can implement your own mock <code>FileSystem</code> (or you can use an existing one such as <a href="https://github.com/google/jimfs">JIMFS</a>). Second, it integrates with Java 8 streams, allowing you to do things like lazily walk a directory tree.</p>
+</div>
+<div class="paragraph">
+<p>One way to reduce the clutter in the Java 8 version of the CSV script is to make use of some special <code>import</code> features. You can both alias a class, giving it a shorter name, and explicitly import static methods, meaning you don&#8217;t have to qualify them with the class name. Here&#8217;s a modified version of the script using these techniques:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>println 100.0.getClass()
-println 100.0D.getClass()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>you will see that the first value is of type <code>java.math.BigDecimal</code>, while the second one is a <code>java.lang.Double</code>. <code>Double</code> allows for fast calculations at the cost of accuracy, while <code>BigDecimal</code> is accurate at the cost of speed. In fact, <code>Double</code> cannot represent the final result because it&#8217;s too small.</p>
-</div>
-<div class="paragraph">
-<p>As you can guess from running these scripts, Groovy defaults to <code>BigDecimal</code> for floating point literals, which ensures accuracy. This behavior may bother some of you, but it&#8217;s not a big deal. As you can see, it&#8217;s easy to turn floating point literals into <code>Double</code>s through a simple suffix if you have the need for speed.</p>
-</div>
-<div class="paragraph">
-<p>Integer numbers also show some interesting effects. Consider this example for calculating factorials:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>def factorial(n) {                            <b class="conum">(1)</b>
-    return n == 1 ? 1 : n * factorial(n - 1)  <b class="conum">(2)</b>
-}
+<pre class="CodeRay highlight"><code>import static java.nio.file.Files.readAllLines               <b class="conum">(1)</b>
 
-println factorial(10)</code></pre>
+import java.nio.charset.Charset as Ch                        <b class="conum">(2)</b>
+import java.nio.file.FileSystems as FS
+
+def lines = readAllLines(FS.default.getPath("authors.csv"), Ch.forName("UTF-8"))
+
+def authorNames = []
+...</code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <ol>
 <li>
-<p>Declares a new function called "factorial"</p>
+<p>Allows us to call <code>readAllLines()</code> without qualifying with the class name</p>
 </li>
 <li>
-<p>Uses the ternary operator ('&lt;condition&gt; ? &lt;value1&gt; : &lt;value2&gt;') for a conditional result</p>
+<p>Aliases the class name to something shorter</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>A quick work on the implementation before we look at the behavior of this script. The easiest way to implement the factorial algorithm is via recursion, and for that you need functions. As you can see from the example, Groovy allows you to define functions in a script using the syntax</p>
+<p>As you can see, the code for reading the lines of text from the file is now more readable, which is always good for aiding comprehension of your code. You&#8217;ll find static imports in Java as well, but the aliasing is specific to Groovy.</p>
+</div>
+<div class="paragraph">
+<p>I now want to move away from the kinds of scripts that you can run in the Groovy console to something a bit more useful: command line scripts. You can still write them in the Groovy console, but you must first save them to a file before you can run them from the command line.</p>
+</div>
+<div class="paragraph">
+<p>The first example harks back to the days of Apache Ant, a venerable build tool from the Java world. I often used its Filter task as a simple template engine, replacing occurrences of <code>@TOKEN@</code> with whatever parameter values I needed. It&#8217;s not hard to reproduce this behavior in a Groovy script, as you&#8217;ll see from the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>import java.nio.file.FileSystems as FS
+
+if (args.size() != 1) {
+    println "Incorrect number of arguments."
+    println ""
+    println "USAGE: processTemplates TMPL_PATH"
+    System.exit(1)
+}
+
+final tokens = [                                             <b class="conum">(1)</b>
+    NAME: "Whizzbang",
+    CURRENT_DATE: new Date()]
+final templatePath = FS.default.getPath(args[0])
+final sourceText = templatePath.getText("UTF-8")
+
+def processedText = sourceText
+for (entry in tokens) {
+    processedText = processedText.replace(                   <b class="conum">(2)</b>
+            "@${entry.key}@",
+            entry.value.toString())
+}
+
+final outFile = FS.default.getPath("processed.txt")
+outFile.setText(processedText, "UTF-8")                      <b class="conum">(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Hard code the replacement tokens</p>
+</li>
+<li>
+<p>Perform the token substitution using a standard JDK method</p>
+</li>
+<li>
+<p>Write the resulting text to a new (hard-coded) file</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You should by now be familiar with most of the code in the script. The key new feature is the <code>setText()</code> method, which allows you to easily write text to a file. If the file doesn&#8217;t exist, it gets created. Otherwise, its content is overwritten by the string you provide. The method also closes the file automatically, so you don&#8217;t have to worry about leaving file handles open.</p>
+</div>
+<div class="paragraph">
+<p>This works well for simple cases, but you often want to write to a file in chunks. Imagine you want to read records from a database table, perhaps process them, and then generate a CSV file containing one line per record. You could create the CSV in memory as a string and then write it out using <code>setText()</code>, but this is an inefficient use of memory and could take noticeably longer than writing each line to the file as you go. It depends on how many records you have.</p>
+</div>
+<div class="paragraph">
+<p>Fortunately, Groovy provides several convenience methods for writing to a file on an as-you-go basis. I&#8217;m using <code>withPrintWriter()</code> in the next example to do exactly that, while also ensuring that the underlying file is closed regardless of whether my code throws an exception or not. The script takes a path to a directory and then generates a CSV file containing the filename, file size, and creation date for each file in that directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
+import java.nio.file.Files
+import java.nio.file.FileSystems as FS
+import java.nio.file.Path
+import java.time.ZoneId                                      <b class="conum">(1)</b>
+
+if (args.size() != 1) {
+    println "Incorrect number of arguments."
+    println ""
+    println "USAGE: filesReport DIR_PATH"
+    System.exit(1)
+}
+
+final dirPath = FS.default.getPath(args[0])
+final files = Files.list(dirPath)
+
+final outFile = FS.default.getPath("files.csv")
+outFile.withPrintWriter("UTF-8") { writer -&gt;                 <b class="conum">(2)</b>
+    for (path in files) {
+        writer.println("${path.fileName}, ${Files.size(path)}, ${getCreationDate(path)}")
+    }
+}
+
+println "Written report to ${outFile}"
+
+String getCreationDate(Path path) {
+    final creationInstant = Files.getAttribute(path, "creationTime").toInstant()
+    return ISO_OFFSET_DATE_TIME.format(creationInstant.atZone(ZoneId.systemDefault()))
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Use the Java 8+ Date &amp; Time API</p>
+</li>
+<li>
+<p>Generate the CSV file, with one line per source file</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This example doesn&#8217;t have many lines, but it does introduce two important features:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The Java 8+ Date and Time API</p>
+</li>
+<li>
+<p>Closures</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start with the new API.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dates_and_time">Dates and time</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before Java 8, developers either got by with the <code>java.util.Date</code> and <code>java.util.Calendar</code> classes, or they used a third-party library called Joda Time. The latter was often the only choice for even moderately complex date and time work because the core JDK classes were awkward to use and underpowered.</p>
+</div>
+<div class="paragraph">
+<p>The Date and Time API brings coherence to working with dates in Java. Simple things are often easier to accomplish than with the old <code>Date</code> class, while you also gain greater control with more complex requirements. Still, the <code>Date</code> class should work just fine for the file creation dates in our example. So why use the <code>java.time.*</code> classes? For two reasons. First, the file NIO API gives us a <code>java.time.Instant</code> value rather than a <code>java.util.Date</code>. Second, I think you should prioritize the Date and Time API over <code>java.util.Date</code> for your own code because it&#8217;s a significant improvement over the older API. For example, the core classes are immutable and thread safe, unlike <code>Date</code> and <code>Calendar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Figure xxx shows you the most relevant classes of the Date and Time API for right now. The <code>Instant</code> class represents a fixed point in time, independent of calendars and dates. If people around the globe retrieved the current time as an <code>Instant</code> at the same time, they should all get the same value, Of course, this is unlikely as there will almost certainly be variations between the system clocks on their computers. But that&#8217;s the ideal.</p>
+</div>
+<div class="paragraph">
+<p>The <code>java.time.LocalDateTime</code> class is different in that it represents a (Gregorian) calendar date and time, such as New Year&#8217;s Day (1st January for any given year). This is not a fixed point in time because it depends on the time zone you&#8217;re interested in. New Year&#8217;s Day hits Australia well before the west coast of America. To correlate a date and time to an <code>Instant</code>, you need to use either <code>java.time.ZonedDateTime</code> or <code>java.time.OffsetTimeZone</code>, both of which incorporate the time zone information.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s often hard work dealing with calendars and keeping track of time zones, but we&#8217;re fortunate that the API makes life easy for our simple use case. The idea is to store the file creation date in the CSV file as an ISO 8601 date rather than an instant. To do that, we want to format the <code>Instant</code> we get from the <code>Files</code> class. The date formatters require dates rather than instants, though, so we use the <code>Instant.atZone()</code> method to perform the conversion using the system&#8217;s current time zone. We could also perform the conversion using the UTC time zone if we wanted. It all depends on whether we&#8217;re interested in which time zone the file was created in. For server-side work, I&#8217;d recommend almost always using UTC.</p>
+</div>
+<div class="paragraph">
+<p>The Date and Time API brings more to the table than just these classes. Durations and periods allow you to readily calculate deadlines and reminders among other things. Overall, it&#8217;s a richer API than we had previously in the JDK without it being laboriously hard to work with.</p>
+</div>
+<div class="paragraph">
+<p>I now want to go onto the second feature the script introduces: closures.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_closures">Closures</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Developers start using Groovy for a variety of reasons. I started because it was the language of the Grails web framework. But if we could narrow down why people then stayed with Groovy to a single language feature, I&#8217;m convinced it would be closures. It&#8217;s fairly easy these days to explain the basics of them because most of the popular languages have comparable features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ruby code blocks</p>
+</li>
+<li>
+<p>Javascript functions</p>
+</li>
+<li>
+<p>Java 8 lambdas</p>
+</li>
+<li>
+<p>Python functions and lambdas</p>
+</li>
+<li>
+<p>C# lambda expressions and anonymous functions</p>
+</li>
+<li>
+<p>Scala functions</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These aren&#8217;t all exactly the same feature, but they do allow for higher-order functions. If you&#8217;re not familiar with this term, it means that functions can themselves be arguments to other functions. Consider the example of filtering a list of words. You might want all the words that start with the letter 'p'. You might instead be interested words longer than 5 letters. Or perhaps you just want to remove all swear words using a dictionary. The only difference between each of these requirements is the filter constraint. Does the word start with a particular letter? Is it longer than a particular value? The algorithm for filtering the list is always the same, it&#8217;s only the constraint that changes.</p>
+</div>
+<div class="paragraph">
+<p>That constraint can be implemented as a standalone predicate function, i.e. a function that returns <code>true</code> or <code>false</code>. Let&#8217;s see what this looks like in Groovy code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>final swearWords = ["flabbergasted"] as Set
+final words = ["orange", "sit", "profit", "test", "flabbergasted",
+        "honorific", "proposal"]
+
+println words.findAll({ word -&gt; word.startsWith("p") })
+println words.findAll({ word -&gt; word.size() &gt; 5 })
+println words.findAll({ word -&gt; !swearWords.contains(word) })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>findAll()</code> method is a Groovy JDK extension that performs collection filtering. In each of the above calls, it effectively applies the given predicate function (in this case a closure) to each word in the list and only retains the word if the function returns <code>true</code>. You can run the example to see the result.</p>
+</div>
+<div class="paragraph">
+<p>The basic form of a closure is the following:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>&lt;return type&gt; &lt;method name&gt;(&lt;type&gt; &lt;arg&gt;[, &lt;type&gt; &lt;arg&gt;,...]) {
-    &lt;method body&gt;
+<pre>{ &lt;args&gt; -&gt; &lt;function body&gt; }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So the curly braces delimit the closure literal, similar to the way square brackets delimit lists and maps. This can be a bit confusing because methods, loops, and conditions use curly braces as well. I generally ask myself this: are the curly braces part of an assignment or a method <em>call</em>? If so, then I have a closure. Assignments are easy to pick out:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>def predicateFn = { word -&gt; word.startsWith("p") }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Method calls tend to be harder to identify because Groovy supports several syntaxes. I&#8217;ll explain shortly, but first, one question you may be asking yourself is where the <code>word</code> argument comes from. How does it work? It&#8217;s important to understand that a closure&#8217;s argument list behaves just the same as a method&#8217;s. In other words, <code>word</code> only exists within the context of the closure itself. It&#8217;s the responsibility of the <code>findAll()</code> method to pass each word as the argument when calling the closure.</p>
+</div>
+<div class="paragraph">
+<p>To see what I mean, you can try invoking the closure yourself:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>def predicateFn = { word -&gt; word.startsWith("p") }
+predicateFn.call("petals")</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Executing this in the Groovy console will show a result of <code>true</code>, because "petal" starts with a 'p'. What happens if you try to call the closure with more than one argument? The following results in a <code>MissingMethodException</code> for <code>call()</code> because the number of arguments don&#8217;t match:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>def predicateFn = { word -&gt; word.startsWith("p") }
+predicateFn.call("petals", "badarg")</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If it&#8217;s easy to identify a closure that&#8217;s assigned to a variable, why is it harder when the closure is an argument of a method call? Let&#8217;s look at the first <code>findAll()</code> call from the list filtering example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>words.findAll({ word -&gt; word.startsWith("p") })</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s clear that <code>findAll()</code> is a method call because of the parentheses and the closure is defined within the parentheses. This makes the closure definition relatively obvious. But this is an uncommon syntax. The following are all more common alternatives:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>words.findAll() { word -&gt; word.startsWith("p") }
+words.findAll { word -&gt; word.startsWith("p") }
+words.findAll { word -&gt;
+    word.startsWith("p")
 }</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This is also the basic syntax for defining methods within classes, as you&#8217;ll see later. As with the local variables earlier, the <code>factorial()</code> function doesn&#8217;t specify an explicit type for its return value, using <code>def</code> instead. Once defined, you can then call the function from anywhere inside the script.</p>
+<p>Of these, the second is probably the most common and it doesn&#8217;t even have any parentheses at all! What&#8217;s going on? This is simply syntax sugar for a very specific case. If the closure is the last (or only) argument of a method, it can be defined after the parentheses. If it&#8217;s the only argument, it&#8217;s common to dispense with the parentheses entirely.</p>
 </div>
 <div class="paragraph">
-<p>You might notice that <code>factorial()</code> doesn&#8217;t specify a type for its argument. Nor does it use <code>def</code>. That&#8217;s because method arguments are a special case that don&#8217;t require <code>def</code> if they are untyped. If you forget this, don&#8217;t worry: Groovy happily accepts <code>def</code> in front of method arguments. It&#8217;s just unusual amongst more experienced Groovy developers.</p>
-</div>
-<div class="paragraph">
-<p>Executing the factorial script behaves as you&#8217;d expect, displaying the value 3628800 (everyone knows the factorial of 10, right?). But what if I pass a floating point number to the <code>factorial()</code> function instead?</p>
+<p>Given this information about closures, can you identify the one in the earlier example where we created a CSV file from a directory listing? If you remember, the script writes the lines of text to the file using the <code>withPrintWriter()</code> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>...
-println factorial(10.5)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Ouch! Now when you run this you&#8217;ll see an ugly <code>StackOverflowError</code>. That&#8217;s because the recursion only stops when <code>n</code> becomes 1, which never happens if the initial argument is not an integer. So if the function only works with integers, can we specify that as a constraint? Indeed we can. Change the signature of the method to</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>def factorial(int n) {
-    ...
+final outFile = FS.default.getPath("files.csv")
+outFile.withPrintWriter("UTF-8") { writer -&gt;
+    for (path in files) {
+        writer.println("${path.fileName}, ${Files.size(path)}, ${getCreationDate(path)}")
+    }
 }
 ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The argument is now <em>typed</em>. If you attempt to call the <code>factorial()</code> method with an argument of 10.5 now, you&#8217;ll get a <code>MissingMethodException</code> because Groovy can&#8217;t find a method whose signature accepts floating point numbers. You&#8217;re still seeing a runtime error though, as Groovy doesn&#8217;t perform a compile-time check even though we have specified the types.</p>
+<p>The closure begins with <code>{ writer &#8594; &#8230;&#8203;</code>. Under the hood, <code>withPrintWriter()</code> creates or opens the target file and creates a <code>java.io.PrintWriter</code> for it using the character encoding specified by the first argument. It then calls the second argument - the closure - passing the newly created writer as it&#8217;s argument. When the closure returns or throws an exception, <code>withPrintWriter()</code> closes the file. For Java developers, it&#8217;s worth noting that this is the Groovy alternative to Java&#8217;s <em>try-with-resources</em> statement, as that syntax isn&#8217;t supported by Groovy.</p>
+</div>
+<div class="paragraph">
+<p>A good way to learn and understand something is through plenty of examples. Two (filtering and writing to a file) aren&#8217;t really sufficient. To rectify that, I&#8217;m going to revisit some examples from earlier chapters and try to rewrite them using closures where appropriate. This should give you an idea of an alternate approach to thinking about coding problems and how to solve them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_revisiting_earlier_examples">Revisiting earlier examples</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A lot of the examples you saw in the previous chapter have more concise and readable implementations once you start thinking in terms of higher order functions. Take the example for counting the number of vowels in a string. Instead of reaching immediately for a loop to solve the problem, think about what we want to achieve: counting characters. Which characters? Vowels. This is a similar problem to filtering a word list, except this time the algorithm is counting. The predicate simply determines whether a particular character should be counted or not. Is there a method available to do this?</p>
+</div>
+<div class="paragraph">
+<p>If you check out the Groovy JDK documentation, you&#8217;ll find a <code>count()</code> method for <code>CharSequence</code>. The problem is that it only counts occurences of a specified string. What we need is the <code>Iterable.count(Closure)</code> method (the <code>groovy.lang.Closure</code> type is one way to identify a method that accepts closure arguments). Since <code>CharSequence</code> is not an <code>Iterable</code>, we first have to convert it to one using <code>iterator()</code>. We can then perform the count, as demonstrated here:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>def text = "Jack Rabbit Slims Twist Contest"
+
+final vowels = "aeiou"
+final vowelCount = text.iterator().count { vowels.contains(it.toLowerCase()) }
+
+println "Number of vowels: " + vowelCount</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>What was originally 5 lines of a loop is now a single line. The example is also easier to reason about because the code is no longer cluttered with the mechanics of how to count the vowels. The focus here is <em>what</em> we want to achieve, not <em>how</em>.</p>
 </div>
 <div class="sidebarblock">
 <div class="content">
-<div class="title">Primitive vs object types</div>
+<div class="title">Implicit closure argument</div>
 <div class="paragraph">
-<p>I guess now is as good a time as any to explain why <code>int</code> rather than <code>Integer</code>. Java has the concept of primitive types and object types. Primitive types, such as <code>int</code>, <code>double</code>, etc., are not objects and so you can&#8217;t call methods on them. Nor can they have a value of <code>null</code>. On the plus side, they allow for faster calculations.</p>
-</div>
-<div class="paragraph">
-<p>Groovy has inherited primitive types from Java, but it treats them differently. In fact, the only difference between the primitive and object types is that the former can&#8217;t be <code>null</code>. You can access properties and methods on primitive types just as you can on object types. Because of that, I tend to use the primitive types. It&#8217;s more habit than anything else. That said, it makes sense for <code>factorial()</code> to use the primitive type as the algorithm can&#8217;t handle <code>null</code> values anyway.</p>
-</div>
-</div>
+<p>One new element introduced by the previous example is the lack of an explicit argument for the <code>count()</code> closure. There&#8217;s no <code>&#8594;</code> that separates the argument list from the closure body. This is a special syntax that&#8217;s useful for very short closure implementations, typically one-liners. If you don&#8217;t specify an argument list, an implicit argument called <code>it</code> becomes available.</p>
 </div>
 <div class="paragraph">
-<p>Are you happy with the implementation of <code>factorial()</code> as it stands? I&#8217;m not. To understand why, try using a value of 17:</p>
+<p>The implicit variable form only makes sense for methods that pass a single argument to the closure, such as <code>each()</code>, <code>collect()</code>, and <code>count()</code>. It also works with methods that pass no arguments at all, but then <code>it</code> will be <code>null</code>.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>One thing you&#8217;ll quickly realise is how useful closures are in the world of collections. Consider the <a href="#wordStats">first example of section 3.2</a> [xcheck] calculates some statistics about a list of words using a loop. Although the implementation is efficient in terms of there only being a single loop, it&#8217;s not obvious at first glance what it&#8217;s trying to achieve.</p>
+</div>
+<div class="paragraph">
+<p>A better approach in terms of code comprehension is to use some Groovy JDK extension methods for calculating the maximum, minimum and sum of values in a collection. The key point is that we&#8217;re not after the maximum word in this case - you could interpret this as the last word alphabetically perhaps - but the longest word. That&#8217;s where closures come in, as you can see from this alternate implementation of that example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>final words = ["orange", "sit", "test", "flabbergasted", "honorific"]
+
+println "Min word length:  ${words.min { it.size() }.size()}"         <b class="conum">(1)</b>
+println "Max word length:  ${words.max { it.size() }.size()}"
+println "Avg word length:  ${words.sum { it.size() } / words.size()}"</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p><code>min()</code> and <code>max()</code> return the relevant collection element, i.e. a word in this case, so we need to call <code>size()</code> again to get its length</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In other words, we can specify exactly what property of the values in the collection we&#8217;re interested in by passing a closure to <code>min()</code>, <code>max()</code>, and <code>sum()</code> that extracts the relevant information. If we were interested in the number of vowels in the words instead, we could implement a <code>vowelCount()</code> method and use that from the closure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>...
-println factorial(17)</code></pre>
+println words.sum { vowelCount(it) }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Were you expecting a negative number? Whether you were or not, that&#8217;s what happens and it&#8217;s certainly not correct. The reason for this is that <code>int</code> and <code>Integer</code> can only store integers up to a size of 2<sup>31</sup>. If your value goes beyond that, then you end up with something called <em>integer overflow</em>.</p>
+<p>The last example I want to revisit is the method for <a href="#powersOfTwo">calculating the power of twos</a>. I originally showed you an example based on a for loop, but let&#8217;s now take a different tack. Consider what result we want: a list of elements of the form 2<sup>x</sup>, where <code>x</code> is a range of numbers 0 to <code>n</code>. Given a sequence of numbers (<code>0..n</code>), applying the function 2<sup>x</sup> to each of the numbers in that sequence will generate a new sequence containing the required powers of two.</p>
 </div>
 <div class="paragraph">
-<p>You can force Groovy to use a wider integer type by changing the specified type. Long integers are 64 bit, so that will allow us to calculate larger factorials:</p>
+<p>In code form, this looks like</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>def factorial(long n) {
-    ...
-}
-...</code></pre>
+<pre class="CodeRay highlight"><code>List powersOfTwo(int n) {
+    return (0..n).collect { 2 ** it }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Unfortunately, it&#8217;s not long before you hit integer overflows again. Just try using a value of 21! The result is negative yet again. This is one occasion where the <code>java.math.BigInteger</code> type is particularly useful. It can handle integers of almost any size. As with <code>BigDecimal</code>, it&#8217;s not as fast as using the core types, but it&#8217;s speedy enough for many cases:</p>
+<p>The <code>collect()</code> method is a general way of mapping the elements in one sequence to a new sequence. For example a list of words to a list of their lengths. Or sequence of integers to a sequence of their doubles. The actual mapping is defined by the closure, which acts as the mapping function.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re new to this style of programming, you may wonder how useful such a method could be in your day-to-day development. I think you&#8217;ll find you use it regularly, along with many of the other closure-based extensions to the JDK. That&#8217;s certainly been my experience, particularly as we often work a lot with collections.</p>
+</div>
+<div class="paragraph">
+<p>There is one complication to this whole area of Groovy. Java originally had nothing like the <code>collect()</code> method prior to Java 8, but that all changed with the introduction of lambda functions and the Streams API. You now have an alternative. Here&#8217;s a Groovy version of the powers of two method using that API:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>def factorial(BigInteger n) {
-    return n == 1 ? 1 : n * factorial(n - 1)
-}
+<pre class="CodeRay highlight"><code>import java.util.stream.Collectors
 
-println factorial(234)</code></pre>
+List powersOfTwo(int n) {
+    return (0..n).stream().map { 2 ** it }.collect(Collectors.toList())
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You can declare types for local variables and method return values, not just method arguments. Groovy will automatically coerce values to the required type. If a particular coercion isn&#8217;t supported, then you get a runtime error. Type coercion has a lot of subtleties to it, so there&#8217;s a dedicated section for it in chapter TODO.</p>
+<p>There are several important differences between this example and the previous one:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You have to convert a collection to a stream before you can use the functional methods</p>
+</li>
+<li>
+<p>Java&#8217;s <code>map()</code> method is equivalent to Groovy&#8217;s <code>collect()</code></p>
+</li>
+<li>
+<p>Use Java&#8217;s <code>collect()</code> method to convert a stream back to a collection</p>
+</li>
+<li>
+<p>Java&#8217;s streams are lazy (unlike collections), so you can use them to work with infinite sequences</p>
+</li>
+<li>
+<p>You can use a Groovy closure wherever Java 8 allows a lambda function</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So which API should you use? The Groovy Collections extensions or Java 8&#8217;s Streams API? If you have the option, I think the Streams API is more flexible and has more standard names for many of its methods (<code>map()</code> vs <code>collect()</code>, <code>filter()</code> vs <code>findAll()</code>, etc.). They are also type safe, which can be very useful if you like to use the <code>@TypeChecked</code> or <code>@CompileStatic</code> annotations that I discuss later [xcheck] or like your IDE to know what the types of the closure arguments are without explicitly declaring them. The main cost is the small additional complexity of converting to and fro between collections and streams.</p>
+</div>
+<div class="paragraph">
+<p>Ultimately, both APIs provide an extra avenue of expressiveness for your code. If both satisfy a set of given requirements, just use the one that you&#8217;re most comfortable with.</p>
+</div>
+<div class="paragraph">
+<p>I hope I&#8217;ve given you a good idea of just what you can achieve with Groovy when it comes to scripting, and how easy it can be. I&#8217;ve touched on the filesystem and date APIs and explored collections a bit further with closures. All that&#8217;s left for you to do is explore the API documentation yourself now that you have the information you need to navigate those waters. I&#8217;m also hoping that you are at least starting to get a grasp of what closures are and how they can help. You will find extensive use of them throughout this book and in most Groovy code you&#8217;ll come across, so it&#8217;s an important topic.</p>
+</div>
+<div class="paragraph">
+<p>In the next chapter I want to move beyond simple scripting and see how you can incorporate Groovy into a project, such as an command line or web application.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-05-26 16:49:04 BST
+Last updated 2015-05-26 16:45:18 BST
 </div>
 </div>
 </body>

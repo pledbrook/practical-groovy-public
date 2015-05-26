@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.0">
+<meta name="generator" content="Asciidoctor 1.5.2">
 <title>Working with types</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
 /* Remove the comments around the @import statement below when using this as a custom stylesheet */
-/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic|Noto+Serif:400,400italic,700,700italic|Droid+Sans+Mono:400";*/
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400";*/
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}
 audio,canvas,video{display:inline-block}
 audio:not([controls]){display:none;height:0}
@@ -274,8 +274,8 @@ dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
 ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.unstyled,ol.unnumbered,ul.checklist,ul.none{list-style-type:none}
 ul.unstyled,ol.unnumbered,ul.checklist{margin-left:.625em}
-ul.checklist li>p:first-child>.fa-check-square-o:first-child,ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
-ul.checklist li>p:first-child>input[type="checkbox"]:first-child{position:relative;top:1px}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1em;font-size:.85em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{width:1em;position:relative;top:1px}
 ul.inline{margin:0 auto .625em auto;margin-left:-1.375em;margin-right:0;padding:0;list-style:none;overflow:hidden}
 ul.inline>li{list-style:none;float:left;margin-left:1.375em;display:block}
 ul.inline>li>*{display:block}
@@ -380,7 +380,7 @@ p{margin-bottom:1.25rem}
 *{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
 a{color:inherit!important;text-decoration:underline!important}
 a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
-a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after,a[href^="mailto:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
 abbr[title]:after{content:" (" attr(title) ")"}
 pre,blockquote,tr,img{page-break-inside:avoid}
 thead{display:table-header-group}
@@ -993,11 +993,11 @@ if (Character.isUpperCase(text[0] as Character)) {          <b class="conum">(1)
 <div class="paragraph">
 <p>We&#8217;ll start with ordered collections, which are represented by the <a href="https://docs.oracle.com/javase/8/docs/api/?java/util/List.html"><code>java.util.List</code></a> interface. In the following example, I create a list of words (strings) and then proceed to iterate over them to calculate the shortest, longest and average word lengths. Before you critize the implementation (there are better ways to do this), remember that I&#8217;m trying to introduce new concepts and APIs gradually!</p>
 </div>
-<div class="listingblock">
+<div id="wordStats" class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>def words = ["orange", "sit", "test", "flabbergasted", "honorific"]   <b class="conum">(1)</b>
+<pre class="CodeRay highlight"><code>final words = ["orange", "sit", "test", "flabbergasted", "honorific"]   <b class="conum">(1)</b>
 
-def minWordLength = Integer.MAX_VALUE                                 <b class="conum">(2)</b>
+def minWordLength = Integer.MAX_VALUE                                   <b class="conum">(2)</b>
 def maxWordLength = 0
 def totalLength = 0
 for (w in words) {
@@ -1008,7 +1008,7 @@ for (w in words) {
 
 println "Min word length:  ${minWordLength}"
 println "Max word length:  ${maxWordLength}"
-println "Avg word length:  ${totalLength / words.size()}"             <b class="conum">(3)</b></code></pre>
+println "Avg word length:  ${totalLength / words.size()}"               <b class="conum">(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1055,7 +1055,7 @@ assert words[words.size() - 1] == "honorific"                         <b class="
 <div class="paragraph">
 <p>Sometimes a list literal isn&#8217;t sufficient and you need to build one dynamically. Consider a method that creates a list of the powers of two, i.e. <em>f(x) = 2<sup>x</sup></em>:</p>
 </div>
-<div class="listingblock">
+<div id="powersOfTwo" class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>List powersOfTwo(int n) {
     def result = []
@@ -1738,7 +1738,7 @@ println "Done!"</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-04-01 11:58:36 BST
+Last updated 2015-05-26 16:49:04 BST
 </div>
 </div>
 </body>
